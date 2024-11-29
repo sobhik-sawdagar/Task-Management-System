@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Neue+Montreal:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1 class="app-header">Task Management System</h1>
+    
+    <div class="container">
+        <div class="card">
+            <form id="taskForm" class="task-form">
+                <div class="form-group">
+                    <label for="title">Task Title</label>
+                    <input type="text" id="title" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" class="form-input" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="dueDate">Due Date</label>
+                    <input type="date" id="dueDate" class="form-input">
+                </div>
+                <div class="task-actions">
+                    <button type="submit" class="btn">Add Task</button>
+                    <button type="button" id="viewTasksBtn" class="btn">View Tasks</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="filter-section">
+            <label for="statusFilter">Filter Tasks:</label>
+            <select id="statusFilter" class="form-input">
+                <option value="all">All Tasks</option>
+                <option value="Pending">Pending</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
+
+        <div id="taskList" class="task-list">
+            <!-- Tasks will be dynamically populated here -->
+        </div>
+
+        <div id="editTaskModal" class="modal">
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <h2>Edit Task</h2>
+                <form id="editTaskForm" class="task-form">
+                    <input type="hidden" id="editTaskId">
+                    <div class="form-group">
+                        <label for="editTitle">Task Title</label>
+                        <input type="text" id="editTitle" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDescription">Description</label>
+                        <textarea id="editDescription" class="form-input"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDueDate">Due Date</label>
+                        <input type="date" id="editDueDate" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label for="editStatus">Status</label>
+                        <select id="editStatus" class="form-input">
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="task-actions">
+                        <button type="submit" class="btn">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
