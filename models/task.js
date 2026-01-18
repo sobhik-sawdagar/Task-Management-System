@@ -16,12 +16,13 @@ class TaskSchema {
         VALUES (?, ?, ?)
       `;
 
-      db.run(query, [title, description, dueDate], function(err) {
-        if (err) {
-          return reject(err);
-        }
-        resolve({ id: this.lastID, ...task });
-      });
+      try {
+        const stmt = db.prepare(query);
+        const result = stmt.run(title, description, dueDate);
+        resolve({ id: result.lastInsertRowid, ...task });
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
@@ -30,12 +31,12 @@ class TaskSchema {
     return new Promise((resolve, reject) => {
       const query = 'SELECT * FROM tasks ORDER BY created_at DESC';
       
-      db.all(query, [], (err, rows) => {
-        if (err) {
-          return reject(err);
-        }
+      try {
+        const rows = db.prepare(query).all();
         resolve(rows);
-      });
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
@@ -58,15 +59,16 @@ class TaskSchema {
         WHERE id = ?
       `;
 
-      db.run(query, [title, description, dueDate, status, id], function(err) {
-        if (err) {
-          return reject(err);
-        }
-        if (this.changes === 0) {
+      try {
+        const stmt = db.prepare(query);
+        const result = stmt.run(title, description, dueDate, status, id);
+        if (result.changes === 0) {
           return reject(new Error('Task not found'));
         }
         resolve({ id, ...updateData });
-      });
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 
@@ -75,15 +77,16 @@ class TaskSchema {
     return new Promise((resolve, reject) => {
       const query = 'DELETE FROM tasks WHERE id = ?';
       
-      db.run(query, [id], function(err) {
-        if (err) {
-          return reject(err);
-        }
-        if (this.changes === 0) {
+      try {
+        const stmt = db.prepare(query);
+        const result = stmt.run(id);
+        if (result.changes === 0) {
           return reject(new Error('Task not found'));
         }
         resolve({ message: 'Task deleted successfully' });
-      });
+      } catch (err) {
+        reject(err);
+      }
     });
   }
 }

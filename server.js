@@ -4,9 +4,9 @@ const taskRoutes = require('./routes/taskRoutes');
 const cors = require('cors');
 const path = require('path');
 const dotenv = require('dotenv');
+const db = require('./config/database');
 
 dotenv.config();
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -39,6 +39,12 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+process.on('SIGINT', () => {
+  console.log('Server is shutting down...');
+  db.close();
+  process.exit(0);
 });
 
 module.exports = app;
